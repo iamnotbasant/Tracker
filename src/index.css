@@ -1,0 +1,221 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Custom design system theme styles */
+:root {
+  --primary: #121c2a;
+  --primary-container: #121c2a;
+  --on-primary-fixed-variant: #1a2536;
+  --surface: #f8f9ff;
+  --on-surface: #121c2a;
+  --on-surface-variant: #464554;
+  --surface-container-low: #eff4ff;
+  --outline-variant: #c7c4d7;
+}
+
+/* Global scrollbar hiding */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+  scrollbar-width: none;
+}
+
+/* TopAppBar Style */
+.top-app-bar {
+  background-color: #f8f9ff;
+  color: #121c2a;
+  border-bottom: 2px solid #c7c4d7;
+}
+
+/* In keeping with strict zero-gradient and physical tactile buttons: */
+
+/* Selection Button Logic */
+.select-btn {
+  background-color: #eff4ff;
+  color: #121c2a;
+  border: 2px solid #121c2a !important;
+  border-bottom: 5px solid #121c2a !important;
+  font-weight: 800 !important;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+/* Dark theme button overrides for more weight & contrast */
+html.dark .select-btn {
+  background-color: #1a1a1c;
+  color: #f4f4f5;
+  border: 2px solid #3f3f46 !important;
+  border-bottom: 5px solid #3f3f46 !important;
+}
+
+.select-btn:active {
+  transform: translateY(2px) scale(0.97);
+}
+
+.select-btn[data-selected="true"] {
+  color: #ffffff !important;
+  border-color: #121c2a !important;
+  border-bottom-width: 5px !important;
+  transform: translateY(-2px);
+}
+
+html.dark .select-btn[data-selected="true"] {
+  border-color: #ffffff !important;
+}
+
+/* Button indicator icon toggle */
+.select-btn .check-icon {
+  display: none;
+}
+.select-btn[data-selected="true"] .check-icon {
+  display: block;
+}
+
+/* Dynamic Active State Colors for Categories */
+.select-btn.angry[data-selected="true"] { background-color: #f97316 !important; border-bottom-color: #c2410c !important; color: #ffffff !important; }
+.select-btn.sad[data-selected="true"] { background-color: #3b82f6 !important; border-bottom-color: #1d4ed8 !important; color: #ffffff !important; }
+.select-btn.upset[data-selected="true"] { background-color: #8b5cf6 !important; border-bottom-color: #6d28d9 !important; color: #ffffff !important; }
+.select-btn.neutral[data-selected="true"] { background-color: #64748b !important; border-bottom-color: #475569 !important; color: #ffffff !important; }
+.select-btn.happy[data-selected="true"] { background-color: #22c55e !important; border-bottom-color: #15803d !important; color: #ffffff !important; }
+.select-btn.euphoric[data-selected="true"] { background-color: #eab308 !important; border-bottom-color: #a16207 !important; color: #ffffff !important; }
+
+.select-btn.dead[data-selected="true"] { background-color: #4b5563 !important; border-bottom-color: #374151 !important; color: #ffffff !important; }
+.select-btn.low[data-selected="true"] { background-color: #f59e0b !important; border-bottom-color: #b45309 !important; color: #ffffff !important; }
+.select-btn.normal[data-selected="true"] { background-color: #0ea5e9 !important; border-bottom-color: #0369a1 !important; color: #ffffff !important; }
+.select-btn.beast[data-selected="true"] { background-color: #ef4444 !important; border-bottom-color: #b91c1c !important; color: #ffffff !important; }
+
+.select-btn.blocked[data-selected="true"] { background-color: #ef4444 !important; border-bottom-color: #b91c1c !important; color: #ffffff !important; }
+.select-btn.pushing[data-selected="true"] { background-color: #f59e0b !important; border-bottom-color: #b45309 !important; color: #ffffff !important; }
+.select-btn.flow[data-selected="true"] { background-color: #06b6d4 !important; border-bottom-color: #0891b2 !important; color: #ffffff !important; }
+
+.select-btn.anxiety[data-selected="true"] { background-color: #8b5cf6 !important; border-bottom-color: #6d28d9 !important; color: #ffffff !important; }
+.select-btn.worried[data-selected="true"] { background-color: #f59e0b !important; border-bottom-color: #b45309 !important; color: #ffffff !important; }
+.select-btn.fearless[data-selected="true"] { background-color: #22c55e !important; border-bottom-color: #15803d !important; color: #ffffff !important; }
+
+.select-btn.activity-work[data-selected="true"] { background-color: #6366f1 !important; border-bottom-color: #4338ca !important; color: #ffffff !important; }
+.select-btn.activity-ghar[data-selected="true"] { background-color: #14b8a6 !important; border-bottom-color: #0f766e !important; color: #ffffff !important; }
+.select-btn.activity-scrolling[data-selected="true"] { background-color: #f43f5e !important; border-bottom-color: #be123c !important; color: #ffffff !important; }
+.select-btn.activity-meal[data-selected="true"] { background-color: #fb923c !important; border-bottom-color: #ea580c !important; color: #ffffff !important; }
+.select-btn.activity-exercise[data-selected="true"] { background-color: #4ade80 !important; border-bottom-color: #16a34a !important; color: #ffffff !important; }
+.select-btn.activity-personal[data-selected="true"] { background-color: #8b5cf6 !important; border-bottom-color: #6d28d9 !important; color: #ffffff !important; }
+.select-btn.activity-social[data-selected="true"] { background-color: #f472b6 !important; border-bottom-color: #db2777 !important; color: #ffffff !important; }
+
+/* Custom dynamic selectors based on ID prefix if custom labels are created */
+.select-btn.custom-option[data-selected="true"] {
+  background-color: #4648d4 !important;
+  border-bottom-color: #2f2ebe !important;
+  color: #ffffff !important;
+}
+
+/* Tactile 3D Buttons */
+.log-btn {
+  background-color: #121c2a;
+  color: #ffffff;
+  border: 2px solid #121c2a;
+  border-bottom: 5.5px solid #121c2a;
+  font-weight: 900 !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.1s ease;
+  padding-top: 16px !important;
+  padding-bottom: 16px !important;
+}
+html.dark .log-btn {
+  background-color: #d97706;
+  border: 2.5px solid #2d2d30;
+  border-bottom: 5.5px solid #78350f;
+  color: #ffffff;
+}
+.log-btn:active {
+  transform: translateY(3px);
+  border-bottom-width: 2.5px;
+}
+
+.chunky-button {
+  box-shadow: 0 4px 0 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.1s ease-in-out;
+}
+.chunky-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.1);
+}
+
+.chunky-button-primary {
+  box-shadow: 0 4px 0 0 #2f2ebe;
+  transition: all 0.1s ease-in-out;
+}
+.chunky-button-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 0 #2f2ebe;
+}
+
+/* 3D Shadows */
+.primary-shadow {
+  box-shadow: 4px 4px 0px 0px #2f2ebe;
+}
+.surface-shadow {
+  box-shadow: 4px 4px 0px 0px #d9e3f6;
+}
+.chunky-card {
+  box-shadow: 4px 4px 0px 0px rgba(18, 28, 42, 0.05);
+  border: 2px solid #e6eeff;
+}
+
+/* Material Symbols fill control and style declarations */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined' !important;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.filled-icon {
+  font-variation-settings: 'FILL' 1 !important;
+}
+
+/* Animations */
+@keyframes bounce-short {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-bounce-short {
+  animation: bounce-short 1.5s ease-in-out infinite;
+}
+
+/* Dark mode fallback variable values overrides (if dark mode is active on html element) */
+html.dark {
+  --surface: #0c0c0e;
+  --on-surface: #f4f4f5;
+  --on-surface-variant: #a1a1aa;
+  --surface-container-low: #18181b;
+  --outline-variant: #2d2d30;
+}
+html.dark body {
+  background-color: #000000 !important;
+  color: #f4f4f5 !important;
+}
+html.dark .chunky-card {
+  background-color: #121214 !important;
+  border-color: #2d2d30 !important;
+  box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.4);
+}

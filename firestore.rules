@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net: Default Deny All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Standard Zero-Trust Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Validation Blueprint for the User Profile Document
+    function isValidUser(data) {
+      return data.keys().hasAll(['name', 'title', 'email'])
+             && data.keys().size() <= 8
+             && data.name is string && data.name.size() <= 100
+             && data.title is string && data.title.size() <= 150
+             && data.email is string && data.email.size() <= 150
+             && (!data.keys().contains('avatarUrl') || (data.avatarUrl is string && data.avatarUrl.size() <= 500))
+             && (!data.keys().contains('remindersEnabled') || data.remindersEnabled is bool)
+             && (!data.keys().contains('reminderIntervalHours') || data.reminderIntervalHours is number)
+             && (!data.keys().contains('createdAt') || data.createdAt is string);
+    }
+
+    // Validation Blueprint for the LogEntry Document (Custom and Native Activities/Moods)
+    function isValidLogEntry(data) {
+      return data.keys().hasAll(['id', 'createdAt', 'mood', 'energy', 'resistance', 'fear', 'activity'])
+             && data.keys().size() <= 8
+             && data.id is string && data.id.size() <= 100
+             && data.createdAt is string && data.createdAt.size() <= 80
+             && data.mood is string && data.mood.size() <= 50
+             && data.energy is string && data.energy.size() <= 50
+             && data.resistance is string && data.resistance.size() <= 50
+             && data.fear is string && data.fear.size() <= 50
+             && data.activity is string && data.activity.size() <= 50
+             && (!data.keys().contains('note') || (data.note is string && data.note.size() <= 2000));
+    }
+
+    // 3. Match Block Rules for User profiles
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data)
+                    && request.resource.data.email == resource.data.email
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                         'name', 'title', 'avatarUrl', 'remindersEnabled', 'reminderIntervalHours'
+                       ]);
+      allow delete: if false; // User accounts cannot be orphaned or programmatically pruned by the client
+
+      // Match Sub-collection for Log Entries
+      match /logs/{logId} {
+        allow list: if isOwner(userId);
+        allow get: if isOwner(userId) && isValidId(logId);
+        allow create: if isOwner(userId) && isValidId(logId) && isValidLogEntry(request.resource.data);
+        allow update: if isOwner(userId) && isValidId(logId) && isValidLogEntry(request.resource.data)
+                      && request.resource.data.id == resource.data.id
+                      && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+                           'mood', 'energy', 'resistance', 'fear', 'activity', 'note'
+                         ]);
+        allow delete: if isOwner(userId) && isValidId(logId);
+      }
+    }
+  }
+}

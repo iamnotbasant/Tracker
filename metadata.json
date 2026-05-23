@@ -1,0 +1,6 @@
+{
+  "name": "Mind Blueprint",
+  "description": "A behavioral friction tracking and emotional mapping system that aligns mood, energy, resistance, fear, and daily activities to reveal personal patterns and build consistency.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

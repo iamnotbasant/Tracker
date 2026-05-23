@@ -1,0 +1,45 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with configuration, settings and metadata.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Display name of the user." },
+        "title": { "type": "string", "description": "Title or status flag of the user." },
+        "avatarUrl": { "type": "string", "description": "URL of the user avatar." },
+        "remindersEnabled": { "type": "boolean", "description": "Whether recurring push notes are active." },
+        "reminderIntervalHours": { "type": "number", "description": "User custom hour interval alert setup." },
+        "email": { "type": "string", "description": "User email address." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the profile was generated." }
+      },
+      "required": ["name", "title", "email"]
+    },
+    "LogEntry": {
+      "title": "LogEntry",
+      "description": "Mind tracking log indicating mood, energy, fear, resistance, standard and custom activities.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique log identifier." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "ISO timestamp representing action." },
+        "mood": { "type": "string", "description": "Identified mood ID." },
+        "energy": { "type": "string", "description": "Identified energy scale ID." },
+        "resistance": { "type": "string", "description": "Identified flow/resistance scale ID." },
+        "fear": { "type": "string", "description": "Identified anxiety/fear scale ID." },
+        "activity": { "type": "string", "description": "Identified activity ID." },
+        "note": { "type": "string", "description": "Optional contextual paragraph logs." }
+      },
+      "required": ["id", "createdAt", "mood", "energy", "resistance", "fear", "activity"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Document containing user-specific profiles, triggers, settings and configurations."
+    },
+    "/users/{userId}/logs/{logId}": {
+      "schema": "LogEntry",
+      "description": "Sub-collection preserving chronological list of logs registered by the authenticated user."
+    }
+  }
+}
